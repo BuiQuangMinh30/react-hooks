@@ -1,32 +1,26 @@
-import { useState,useRef, useEffect } from "react";
+import { useState,useRef, useEffect, useCallback } from "react";
 import Content1 from "./Content1";
-import Content2 from "./Content2";
+import Content2 from "./Content2.jsx";
+import Content3 from "./Content3";
 function App() {
-  // const [show, setShow] = useState(false)
-  // return (
-  //   <div>
-  //     <button onClick={()=>setShow(!show)}>Toggle</button>
-  //     {show && <Content2/>}
-  //    </div>
-  // );
-  const [count, setCount] = useState(60);
-  
-  let timerId = useRef(); 
-  const handleStart = () =>{
-    timerId.current =  setInterval(()=>{
-      setCount(prev=>prev-1)
-    },1000)
-  }
-  const handlePause = () =>{
-    clearInterval(timerId.current)
-  }
+  const [count, setCount] = useState(0);
+  const [todos,setTodos] = useState([]);
 
+  const increment = () => {
+    setCount((c) => c +1);
+  }
+  const addTodos = useCallback(()=>{
+    setTodos((t)=> [...t,"hello"])
+  },[todos])
   return (
-    <div className="App">
-      <h1>{count}</h1>
-      <button onClick={handleStart}>Start</button>
-      <button onClick={handlePause}>Pause</button>
-    </div>
+    <>
+      <Content3 addTodos={addTodos} todos={todos}/>
+      <hr/>
+      <div>
+        Count: {count}
+        <button onClick={increment}>Add</button>
+        </div> 
+    </>
   )
 }
 
